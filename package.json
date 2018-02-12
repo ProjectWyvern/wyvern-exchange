@@ -1,0 +1,26 @@
+{
+  "name": "wyvern-exchange",
+  "version": "0.1.0",
+  "description": "Javascript SDK for the Wyvern Exchange",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ProjectWyvern/wyvern-exchange.git"
+  },
+  "keywords": [
+    "ethereum",
+    "project-wyvern",
+    "smart-contracts"
+  ],
+  "author": "Project Wyvern Developers",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ProjectWyvern/wyvern-exchange/issues"
+  },
+  "homepage": "https://github.com/ProjectWyvern/wyvern-exchange#readme",
+  "dependencies": {
+    "axios": "^0.17.1",
+    "bignumber.js": "^6.0.0",
+    "wyvern-js": "file:../wyvern-js"
+  }
+}
