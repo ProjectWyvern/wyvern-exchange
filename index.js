@@ -42,20 +42,28 @@ const orderFromJSON = (order) => {
   return fromJSON
 }
 
-module.exports = {
-  orders: async (endpoint) => {
-    const response = await axios.get(`${endpoint}/v0/orders`)
+class WyvernExchange {
+  constructor (endpoint) {
+    this.endpoint = endpoint
+  }
+
+  async orders () {
+    const response = await axios.get(`${this.endpoint}/v0/orders`)
     return response.data.result.map(orderFromJSON)
-  },
-  order: async (endpoint, hash) => {
-    const response = await axios.get(`${endpoint}/v0/orders/${hash}`)
+  }
+
+  async order (hash) {
+    const response = await axios.get(`${this.endpoint}/v0/orders/${hash}`)
     return orderFromJSON(response.data.result)
-  },
-  validateOrder: async (endpoint, order) => {
-    return axios.post(`${endpoint}/v0/orders/validate`, order)
-  },
-  postOrder: async (endpoint, order) => {
-    return axios.post(`${endpoint}/v0/orders/post`, order)
-  },
-  errors
+  }
+
+  async validateOrder (order) {
+    return axios.post(`${this.endpoint}/v0/orders/validate`, order)
+  }
+
+  async postOrder (order) {
+    return axios.post(`${this.endpoint}/v0/orders/post`, order)
+  }
 }
+
+module.exports = { WyvernExchange, errors }
