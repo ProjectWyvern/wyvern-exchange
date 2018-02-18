@@ -3,6 +3,8 @@ const BigNumber = require('bignumber.js')
 
 const { WyvernProtocol } = require('wyvern-js')
 
+const feeRecipient = '0x11db40014E2985c360B3f2A4bA350fBf104Dc326'
+
 const errors = {
   INVALID_HASH: 'invalid_hash'
 }
@@ -66,4 +68,4 @@ class WyvernExchange {
   }
 }
 
-module.exports = { WyvernExchange, errors }
+module.exports = { WyvernExchange, errors, feeRecipient }
