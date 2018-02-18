@@ -1,6 +1,6 @@
 {
   "name": "wyvern-exchange",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Javascript SDK for the Wyvern Exchange",
   "main": "index.js",
   "repository": {
@@ -21,6 +21,6 @@
   "dependencies": {
     "axios": "^0.17.1",
     "bignumber.js": "^6.0.0",
-    "wyvern-js": "file:../wyvern-js"
+    "wyvern-js": "0.1.1"
   }
 }
