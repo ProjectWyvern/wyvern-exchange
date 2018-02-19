@@ -1,4 +1,5 @@
 const axios = require('axios')
+const querystring = require('querystring')
 const BigNumber = require('bignumber.js')
 
 const { WyvernProtocol } = require('wyvern-js')
@@ -9,12 +10,31 @@ const errors = {
   INVALID_HASH: 'invalid_hash'
 }
 
-const orderFromJSON = (order) => {
+var assetFromJSON
+var settlementFromJSON
+var orderFromJSON
+
+assetFromJSON = (asset) => {
+  if (asset.orders) {
+    asset.orders = asset.orders.map(orderFromJSON)
+  }
+  return asset
+}
+
+settlementFromJSON = (settlement) => {
+  settlement.price = new BigNumber(settlement.price)
+  if (settlement.order) {
+    settlement.order = orderFromJSON(settlement.order)
+  }
+  return settlement
+}
+
+orderFromJSON = (order) => {
   const hash = WyvernProtocol.getOrderHashHex(order)
   if (hash !== order.hash) {
     throw new Error(errors.INVALID_HASH)
   }
-  const fromJSON = {
+  var fromJSON = {
     hash: order.hash,
     metadata: order.metadata,
     exchange: order.exchange,
@@ -41,7 +61,17 @@ const orderFromJSON = (order) => {
     r: order.r,
     s: order.s
   }
+  if (order.asset) fromJSON.asset = assetFromJSON(order.asset)
+  if (order.settlement) fromJSON.settlement = settlementFromJSON(order.settlement)
   return fromJSON
+}
+
+const objToQuery = (obj) => {
+  if (obj) {
+    return '?' + querystring.stringify(obj)
+  } else {
+    return ''
+  }
 }
 
 class WyvernExchange {
@@ -49,8 +79,32 @@ class WyvernExchange {
     this.endpoint = endpoint
   }
 
-  async orders () {
-    const response = await axios.get(`${this.endpoint}/v0/orders`)
+  async settlements (query) {
+    const response = await axios.get(`${this.endpoint}/v0/settlements${objToQuery(query)}`)
+    return response.data.result.map(settlementFromJSON)
+  }
+
+  async settlement (transactionHashIndex) {
+    const response = await axios.get(`${this.endpoint}/v0/settlements/transactionHashIndex`)
+    return settlementFromJSON(response.data.result)
+  }
+
+  async assets (query) {
+    const response = await axios.get(`${this.endpoint}/v0/assets${objToQuery(query)}`)
+    return response.data.result.map(assetFromJSON)
+  }
+
+  async asset (hash) {
+    const response = await axios.get(`${this.endpoint}/v0/assets/{hash}`)
+    return assetFromJSON(response.data.result)
+  }
+
+  async trackAsset (asset) {
+    return axios.post(`${this.endpoint}/v0/assets/track`, asset)
+  }
+
+  async orders (query) {
+    const response = await axios.get(`${this.endpoint}/v0/orders${objToQuery(query)}`)
     return response.data.result.map(orderFromJSON)
   }
 
