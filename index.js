@@ -36,6 +36,8 @@ orderFromJSON = (order) => {
   }
   var fromJSON = {
     hash: order.hash,
+    cancelledOrFinalized: order.cancelledOrFinalized,
+    markedInvalid: order.markedInvalid,
     metadata: order.metadata,
     exchange: order.exchange,
     maker: order.maker,

@@ -1,6 +1,6 @@
 {
   "name": "wyvern-exchange",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Javascript SDK for the Wyvern Exchange",
   "main": "index.js",
   "repository": {
