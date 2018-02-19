@@ -95,7 +95,7 @@ class WyvernExchange {
   }
 
   async asset (hash) {
-    const response = await axios.get(`${this.endpoint}/v0/assets/{hash}`)
+    const response = await axios.get(`${this.endpoint}/v0/assets/${hash}`)
     return assetFromJSON(response.data.result)
   }
 
